@@ -4,7 +4,7 @@ Proyek praktik Firebase untuk siswa yang sudah terbiasa Flutter dan Riverpod.
 **UI sudah selesai.** Kerjakan hanya TODO integrasi Firebase.
 
 1. Baca [brief siswa PDF](docs/BRIEF-SISWA.pdf).
-2. Baca [project details PDF] (docs/PROJECT-DETAILS-KLOCK.pdf).
+2. Baca [project details PDF](docs/PROJECT-DETAILS-KLOCK.pdf).
 3. Buka folder ini sebagai proyek Flutter terpisah.
 4. Jalankan `flutter pub get`.
 5. Ikuti [12 TODO Firebase](FIREBASE_TODO.md) berurutan.
