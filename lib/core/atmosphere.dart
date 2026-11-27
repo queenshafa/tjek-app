@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class Atmosphere extends StatelessWidget {
   const Atmosphere({super.key, required this.child});
@@ -15,17 +15,26 @@ class Atmosphere extends StatelessWidget {
           Positioned(
             top: -130,
             right: -150,
-            child: _glow(460, dark ? const Color(0xFF514785) : const Color(0xFFB9AEF7)),
+            child: _glow(
+              460,
+              dark ? const Color(0xFF514785) : const Color(0xFFB9AEF7),
+            ),
           ),
           Positioned(
             top: 300,
             left: -180,
-            child: _glow(450, dark ? const Color(0xFF1C555E) : const Color(0xFF9FDDE0)),
+            child: _glow(
+              450,
+              dark ? const Color(0xFF1C555E) : const Color(0xFF9FDDE0),
+            ),
           ),
           Positioned(
             bottom: -150,
             right: -90,
-            child: _glow(360, dark ? const Color(0xFF4C365D) : const Color(0xFFF1C6BD)),
+            child: _glow(
+              360,
+              dark ? const Color(0xFF4C365D) : const Color(0xFFF1C6BD),
+            ),
           ),
           Positioned.fill(
             child: IgnorePointer(child: CustomPaint(painter: _Grain(dark))),
@@ -56,7 +65,9 @@ class _Grain extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = (dark ? Colors.white : const Color(0xFF516086)).withValues(alpha: .06);
+      ..color = (dark ? Colors.white : const Color(0xFF516086)).withValues(
+        alpha: .06,
+      );
     for (double x = 12; x < size.width; x += 24) {
       for (double y = 12; y < size.height; y += 24) {
         canvas.drawCircle(Offset(x, y), .7, paint);

@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../camera/front_camera_page.dart';
 
@@ -19,7 +19,10 @@ abstract final class CameraService {
             onPressed: () => Navigator.pop(context, false),
             child: const Text('Nanti dulu'),
           ),
-          TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Lanjut')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Lanjut'),
+          ),
         ],
       ),
     );

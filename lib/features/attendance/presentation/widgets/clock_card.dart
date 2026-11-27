@@ -1,39 +1,32 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:one_clock/one_clock.dart' show AnalogClock;
 
 import '../../../../core/clock_provider.dart';
-import '../../../../core/surface_card.dart';
-import '../../../../core/orbit_clock.dart';
 import '../../domain/attendance_policy.dart';
 
 class ClockCard extends ConsumerWidget {
   const ClockCard({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final now = AttendancePolicy.wib(ref.watch(clockProvider).asData?.value ?? DateTime.now());
-    final scheme = Theme.of(context).colorScheme;
-    return SurfaceCard(
-      tint: scheme.primaryContainer,
+    final now = AttendancePolicy.wib(
+      ref.watch(clockProvider).asData?.value ?? DateTime.now(),
+    );
+
+    const orange = Color(0xFFF36C0B);
+
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(17),
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
-              Container(
-                width: 7,
-                height: 7,
-                decoration: BoxDecoration(color: scheme.primary, shape: BoxShape.circle),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                DateFormat('EEEE, d MMM', 'id').format(now),
-                style: TextStyle(color: scheme.onSurfaceVariant, fontSize: 13),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: FittedBox(
@@ -45,20 +38,21 @@ class ClockCard extends ConsumerWidget {
                       Text(
                         DateFormat('HH:mm').format(now),
                         style: const TextStyle(
-                          fontSize: 58,
+                          fontSize: 45,
                           fontWeight: FontWeight.w700,
-                          letterSpacing: -3,
+                          color: orange,
+                          letterSpacing: -1.5,
                           fontFeatures: [FontFeature.tabularFigures()],
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 6, bottom: 13),
+                        padding: const EdgeInsets.only(left: 2, bottom: 15),
                         child: Text(
                           DateFormat(':ss').format(now),
-                          style: TextStyle(
-                            fontSize: 22,
-                            color: scheme.onSurfaceVariant,
-                            fontFeatures: const [FontFeature.tabularFigures()],
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: orange,
+                            fontFeatures: [FontFeature.tabularFigures()],
                           ),
                         ),
                       ),
@@ -66,18 +60,53 @@ class ClockCard extends ConsumerWidget {
                   ),
                 ),
               ),
-              const OrbitClock(size: 84),
+
+              const SizedBox(width: 10),
+
+              // Live Analog Clock
+              AnalogClock(
+                width: 58,
+                height: 58,
+                isLive: false,
+                datetime: now,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.black, width: 2.5),
+                ),
+                hourHandColor: Colors.black,
+                minuteHandColor: Colors.black,
+                secondHandColor: orange,
+                showSecondHand: true,
+                showNumbers: false,
+                showAllNumbers: false,
+                showTicks: true,
+                showDigitalClock: false,
+              ),
             ],
           ),
-          const SizedBox(height: 12),
+
+          const SizedBox(height: 2),
+
           Row(
             children: [
-              Icon(Icons.schedule_rounded, size: 16, color: scheme.primary),
-              const SizedBox(width: 7),
-              const Expanded(child: Text('Masuk 07.00 WIB', style: TextStyle(fontSize: 12))),
+              const Expanded(
+                child: Text(
+                  'Masuk jam 07:00 WIB',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
               Text(
-                'WIB',
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: scheme.primary),
+                DateFormat('EEEE, d MMM', 'id').format(now),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),

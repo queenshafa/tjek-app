@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/surface_card.dart';
 
@@ -9,7 +9,11 @@ class FloatingNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    const icons = [Icons.grid_view_rounded, Icons.receipt_long_rounded, Icons.person_rounded];
+    const icons = [
+      Icons.grid_view_rounded,
+      Icons.receipt_long_rounded,
+      Icons.person_rounded,
+    ];
     const labels = ['Beranda', 'Riwayat', 'Profil'];
     return SafeArea(
       top: false,
@@ -41,15 +45,21 @@ class FloatingNav extends StatelessWidget {
                             Icon(
                               icons[i],
                               size: 22,
-                              color: index == i ? scheme.primary : scheme.onSurfaceVariant,
+                              color: index == i
+                                  ? scheme.primary
+                                  : scheme.onSurfaceVariant,
                             ),
                             const SizedBox(height: 4),
                             Text(
                               labels[i],
                               style: TextStyle(
                                 fontSize: 11,
-                                fontWeight: index == i ? FontWeight.w700 : FontWeight.w500,
-                                color: index == i ? scheme.primary : scheme.onSurfaceVariant,
+                                fontWeight: index == i
+                                    ? FontWeight.w700
+                                    : FontWeight.w500,
+                                color: index == i
+                                    ? scheme.primary
+                                    : scheme.onSurfaceVariant,
                               ),
                             ),
                           ],

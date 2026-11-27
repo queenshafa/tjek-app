@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -21,12 +21,14 @@ class HistoryTile extends ConsumerWidget {
           leading: Icon(
             record.createdAt == null
                 ? Icons.schedule
-                : AttendancePolicy.status(record.createdAt!) == AttendanceStatus.late
+                : AttendancePolicy.status(record.createdAt!) ==
+                      AttendanceStatus.late
                 ? Icons.schedule
                 : Icons.check_circle_outline,
             color:
                 record.createdAt != null &&
-                    AttendancePolicy.status(record.createdAt!) == AttendanceStatus.late
+                    AttendancePolicy.status(record.createdAt!) ==
+                        AttendanceStatus.late
                 ? Theme.of(context).colorScheme.error
                 : Theme.of(context).colorScheme.primary,
           ),
@@ -61,10 +63,17 @@ class PhotoDialog extends ConsumerWidget {
         .watch(photoProvider(id))
         .when(
           data: (bytes) => Image.memory(bytes, fit: BoxFit.contain),
-          loading: () =>
-              const SizedBox(height: 150, child: Center(child: CircularProgressIndicator())),
+          loading: () => const SizedBox(
+            height: 150,
+            child: Center(child: CircularProgressIndicator()),
+          ),
           error: (_, _) => const Text('Foto belum dapat dimuat.'),
         ),
-    actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('Tutup'))],
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context),
+        child: const Text('Tutup'),
+      ),
+    ],
   );
 }

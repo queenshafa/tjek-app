@@ -1,9 +1,14 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class SurfaceCard extends StatelessWidget {
-  const SurfaceCard({super.key, required this.child, this.padding = 22, this.tint});
+  const SurfaceCard({
+    super.key,
+    required this.child,
+    this.padding = 22,
+    this.tint,
+  });
   final Widget child;
   final double padding;
   final Color? tint;
@@ -34,15 +39,16 @@ class SurfaceCard extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  (tint ?? (dark ? const Color(0xFF475077) : Colors.white)).withValues(
-                    alpha: dark ? .38 : .75,
-                  ),
+                  (tint ?? (dark ? const Color(0xFF475077) : Colors.white))
+                      .withValues(alpha: dark ? .38 : .75),
                   (dark ? const Color(0xFF232D4A) : Colors.white).withValues(
                     alpha: dark ? .28 : .38,
                   ),
                 ],
               ),
-              border: Border.all(color: Colors.white.withValues(alpha: dark ? .14 : .8)),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: dark ? .14 : .8),
+              ),
             ),
             child: child,
           ),

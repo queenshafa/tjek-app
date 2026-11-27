@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../core/brand_header.dart';
 import '../../core/orbit_clock.dart';
@@ -25,7 +25,10 @@ class LoginHeader extends StatelessWidget {
       const SizedBox(height: 14),
       Text(
         'Satu foto, beres. Masuk pakai akun sekolahmu, ya.',
-        style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, height: 1.6),
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+          height: 1.6,
+        ),
       ),
       const SizedBox(height: 24),
     ],

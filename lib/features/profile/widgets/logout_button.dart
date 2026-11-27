@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../auth/auth_providers.dart';
 
@@ -15,9 +15,14 @@ class _LogoutButtonState extends State<LogoutButton> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Mau keluar akun?'),
-        content: const Text('Absensimu tetap tersimpan. Kamu bisa masuk lagi kapan saja.'),
+        content: const Text(
+          'Absensimu tetap tersimpan. Kamu bisa masuk lagi kapan saja.',
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Batal')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Batal'),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Ya, keluar'),
@@ -31,8 +36,9 @@ class _LogoutButtonState extends State<LogoutButton> {
       await signOut();
     } catch (_) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Belum bisa keluar. Coba lagi, ya.')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Belum bisa keluar. Coba lagi, ya.')),
+        );
       }
     } finally {
       if (mounted) setState(() => busy = false);

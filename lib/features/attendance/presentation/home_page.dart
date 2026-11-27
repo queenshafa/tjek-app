@@ -1,47 +1,142 @@
-import 'package:flutter/material.dart';
+import 'package:klock_app/core/brand_header.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../auth/auth_providers.dart';
-import '../../../core/brand_header.dart';
 import '../../../core/enter_motion.dart';
 import 'providers.dart';
 import 'widgets/clock_card.dart';
 import 'widgets/check_in_card.dart';
 import 'widgets/month_summary.dart';
+import 'widgets/weekly_calendar.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) => EnterMotion(
-    child: ListView(
-      padding: const EdgeInsets.all(24),
-      children: [
-        const BrandHeader(),
-        const SizedBox(height: 26),
-        Text(
-          'Hai, ${ref.watch(studentNameProvider).split(' ').first}.',
-          style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w600, letterSpacing: -.8),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final name = ref.watch(studentNameProvider).split(' ').first;
+
+    return EnterMotion(
+      child: Container(
+        color: const Color(0xFFF4F4F4),
+        child: SafeArea(
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+            children: [
+              // Header
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Semangat Pagi, $name',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -.5,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 3),
+                        const Text(
+                          'Udah masuk sekolah belum mas?',
+                          style: TextStyle(fontSize: 14, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const BrandHeader(),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Weekly Calendar
+              const WeeklyCalendar(),
+
+              const SizedBox(height: 8),
+
+              // Clock
+              const ClockCard(),
+
+              const SizedBox(height: 22),
+
+              // Attendance Check-in
+              const CheckInCard(),
+
+              const SizedBox(height: 10),
+
+              // History Button
+              SizedBox(
+                height: 65,
+                child: FilledButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/history');
+                  },
+                  style: FilledButton.styleFrom(
+                    backgroundColor: const Color(0xFFF36C0B),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 5,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Lihat Riwayat',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: const BoxDecoration(
+                          color: Colors.black,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.white,
+                          size: 21,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              // Attendance Statistics
+              ref
+                  .watch(attendanceProvider)
+                  .when(
+                    data: (items) => MonthSummary(items: items),
+                    loading: () => const LinearProgressIndicator(),
+                    error: (_, _) => const Padding(
+                      padding: EdgeInsets.all(12),
+                      child: Text(
+                        'Catatan belum bisa dimuat. Cek koneksimu, ya.',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ),
+            ],
+          ),
         ),
-        const SizedBox(height: 8),
-        Text(
-          'Sudah sampai? Bikin hari ini tercatat.',
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
-        ),
-        const SizedBox(height: 28),
-        const ClockCard(),
-        const SizedBox(height: 20),
-        const CheckInCard(),
-        const SizedBox(height: 32),
-        const Text('Catatanmu', style: TextStyle(fontSize: 19, fontWeight: FontWeight.w600)),
-        const SizedBox(height: 14),
-        ref
-            .watch(attendanceProvider)
-            .when(
-              data: (items) => MonthSummary(items: items),
-              loading: () => const LinearProgressIndicator(),
-              error: (_, _) => const Text('Catatan belum bisa dimuat. Cek koneksimu, ya.'),
-            ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }

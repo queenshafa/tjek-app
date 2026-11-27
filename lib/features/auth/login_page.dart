@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -31,9 +31,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       error = null;
     });
     try {
-      await ref.read(authRepositoryProvider).signIn(email.text.trim(), password.text);
+      await ref
+          .read(authRepositoryProvider)
+          .signIn(email.text.trim(), password.text);
     } on FirebaseAuthException {
-      if (mounted) setState(() => error = 'Login gagal. Periksa akun dan koneksi kamu.');
+      if (mounted) {
+        setState(() => error = 'Login gagal. Periksa akun dan koneksi kamu.');
+      }
     } catch (_) {
       if (mounted) setState(() => error = 'Belum bisa masuk. Coba lagi.');
     } finally {
@@ -61,7 +65,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   if (error != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 16),
-                      child: Text(error!, style: const TextStyle(color: Colors.orangeAccent)),
+                      child: Text(
+                        error!,
+                        style: const TextStyle(color: Colors.orangeAccent),
+                      ),
                     ),
                   FilledButton(
                     onPressed: busy ? null : login,

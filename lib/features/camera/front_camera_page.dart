@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'camera_session.dart';
 
@@ -37,13 +37,17 @@ class _FrontCameraPageState extends State<FrontCameraPage> {
             children: [
               const Padding(
                 padding: EdgeInsets.all(20),
-                child: Text('Posisikan wajahmu di tengah. Cari tempat yang cukup terang, ya.'),
+                child: Text(
+                  'Posisikan wajahmu di tengah. Cari tempat yang cukup terang, ya.',
+                ),
               ),
               Expanded(
                 child: Center(
                   child: session.controller?.value.isInitialized == true
                       ? AspectRatio(
-                          aspectRatio: MediaQuery.orientationOf(context) == Orientation.portrait
+                          aspectRatio:
+                              MediaQuery.orientationOf(context) ==
+                                  Orientation.portrait
                               ? 1 / session.controller!.value.aspectRatio
                               : session.controller!.value.aspectRatio,
                           child: CameraPreview(session.controller!),
@@ -51,7 +55,10 @@ class _FrontCameraPageState extends State<FrontCameraPage> {
                       : session.error != null
                       ? Padding(
                           padding: const EdgeInsets.all(24),
-                          child: Text(session.error!, textAlign: TextAlign.center),
+                          child: Text(
+                            session.error!,
+                            textAlign: TextAlign.center,
+                          ),
                         )
                       : const CircularProgressIndicator(),
                 ),
@@ -64,13 +71,18 @@ class _FrontCameraPageState extends State<FrontCameraPage> {
               Padding(
                 padding: const EdgeInsets.all(24),
                 child: session.error != null
-                    ? OutlinedButton(onPressed: session.open, child: const Text('Coba lagi'))
+                    ? OutlinedButton(
+                        onPressed: session.open,
+                        child: const Text('Coba lagi'),
+                      )
                     : FilledButton.icon(
                         onPressed: session.busy || session.controller == null
                             ? null
                             : () async {
                                 final Uint8List? bytes = await session.take();
-                                if (context.mounted && bytes != null) Navigator.pop(context, bytes);
+                                if (context.mounted && bytes != null) {
+                                  Navigator.pop(context, bytes);
+                                }
                               },
                         icon: const Icon(Icons.camera_alt_outlined),
                         label: Text(session.busy ? 'Sebentar…' : 'Ambil foto'),

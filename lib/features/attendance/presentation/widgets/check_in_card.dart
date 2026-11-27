@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/surface_card.dart';
 import '../../../../core/clock_provider.dart';
 import '../../domain/attendance.dart';
 import '../../domain/attendance_policy.dart';
@@ -11,69 +10,118 @@ import 'scan_emblem.dart';
 
 class CheckInCard extends ConsumerWidget {
   const CheckInCard({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final records = ref.watch(attendanceProvider);
-    final now = AttendancePolicy.wib(ref.watch(clockProvider).asData?.value ?? DateTime.now());
+
+    final now = AttendancePolicy.wib(
+      ref.watch(clockProvider).asData?.value ?? DateTime.now(),
+    );
+
     Attendance? today;
+
     for (final record in records.asData?.value ?? <Attendance>[]) {
-      final date = record.createdAt == null ? null : AttendancePolicy.wib(record.createdAt!);
-      if (date?.year == now.year && date?.month == now.month && date?.day == now.day) {
+      final date = record.createdAt == null
+          ? null
+          : AttendancePolicy.wib(record.createdAt!);
+
+      if (date?.year == now.year &&
+          date?.month == now.month &&
+          date?.day == now.day) {
         today = record;
       }
     }
-    return SurfaceCard(
+
+    final isLate =
+        today?.createdAt != null &&
+        AttendancePolicy.status(today!.createdAt!) == AttendanceStatus.late;
+
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(17),
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Icon(
-                today == null ? Icons.camera_alt_outlined : Icons.task_alt,
-                color:
-                    today?.createdAt != null &&
-                        AttendancePolicy.status(today!.createdAt!) == AttendanceStatus.late
-                    ? Theme.of(context).colorScheme.error
-                    : Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  today == null ? 'Absen hari ini' : today.statusLabel,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-              ),
-            ],
+          Icon(
+            today == null
+                ? Icons.sentiment_satisfied_alt_rounded
+                : Icons.check_circle_rounded,
+            color: const Color(0xFFF36C0B),
+            size: 55,
           ),
-          const SizedBox(height: 14),
-          const Center(child: ScanEmblem()),
-          const SizedBox(height: 12),
+
+          const SizedBox(height: 2),
+
           Text(
-            today == null ? 'Wajah siap, absen beres.' : 'Absenmu sudah tersimpan.',
-            style: const TextStyle(fontSize: 23, fontWeight: FontWeight.w600, letterSpacing: -.5),
+            today == null ? 'Absen dulu, yuk!' : today.statusLabel,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+            ),
           ),
-          const SizedBox(height: 8),
+
+          const SizedBox(height: 5),
+
           Text(
             today == null
-                ? 'Pakai kamera depan, cek fotonya, lalu kirim. Lewat 07.00 WIB tercatat telat.'
-                : 'Kamu bisa lihat foto dan jam masuknya di Riwayat.',
-            style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, height: 1.6),
+                ? 'Absen pake kamera depan, cek fotonya, langsung kirim deh! Kalau lewat 07:00 WIB, berarti telat, ya!'
+                : 'Absenmu sudah tersimpan. Kamu bisa lihat foto dan jam masuknya di Riwayat.',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 12,
+              height: 1.5,
+              color: Colors.white,
+            ),
           ),
-          const SizedBox(height: 22),
-          FilledButton.icon(
-            onPressed: today != null || !records.hasValue
-                ? null
-                : () =>
-                      Navigator.of(context)
-                          .push(MaterialPageRoute<void>(builder: (_) => const CapturePage())),
-            icon: Icon(today == null ? Icons.camera_alt_outlined : Icons.done),
-            label: Text(today == null ? 'Foto & absen' : 'Sudah absen'),
+
+          const SizedBox(height: 13),
+
+          SizedBox(
+            width: double.infinity,
+            height: 37,
+            child: FilledButton(
+              onPressed: today != null || !records.hasValue
+                  ? null
+                  : () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const CapturePage(),
+                      ),
+                    ),
+              style: FilledButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                disabledBackgroundColor: Colors.white70,
+                disabledForegroundColor: Colors.black54,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9),
+                ),
+              ),
+              child: Text(
+                today == null ? 'Absen' : 'Sudah absen',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
           ),
-          if (records.hasError)
+
+          if (records.hasError) ...[
+            const SizedBox(height: 8),
             TextButton(
               onPressed: () => ref.invalidate(attendanceProvider),
-              child: const Text('Belum terhubung · Coba lagi'),
+              child: const Text(
+                'Belum terhubung · Coba lagi',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
+          ],
         ],
       ),
     );

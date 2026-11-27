@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ScanEmblem extends StatelessWidget {
   const ScanEmblem({super.key});
@@ -17,7 +17,10 @@ class ScanEmblem extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: RadialGradient(
-                colors: [color.withValues(alpha: .18), color.withValues(alpha: 0)],
+                colors: [
+                  color.withValues(alpha: .18),
+                  color.withValues(alpha: 0),
+                ],
               ),
             ),
           ),
@@ -27,9 +30,14 @@ class ScanEmblem extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24),
               border: Border.all(color: color.withValues(alpha: .2)),
-              color: Theme.of(context).colorScheme.surface.withValues(alpha: .5),
+              color: Theme.of(context).colorScheme.surface
+                  .withValues(alpha: .5),
             ),
-            child: Icon(Icons.face_retouching_natural_rounded, size: 30, color: color),
+            child: Icon(
+              Icons.face_retouching_natural_rounded,
+              size: 30,
+              color: color,
+            ),
           ),
           Positioned(
             right: 6,
@@ -40,13 +48,21 @@ class ScanEmblem extends StatelessWidget {
                 color: const Color(0xFF9BE0D1),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(Icons.check_rounded, size: 17, color: Color(0xFF175C51)),
+              child: const Icon(
+                Icons.check_rounded,
+                size: 17,
+                color: Color(0xFF175C51),
+              ),
             ),
           ),
           Positioned(
             left: 2,
             top: 12,
-            child: Icon(Icons.add_rounded, size: 15, color: color.withValues(alpha: .5)),
+            child: Icon(
+              Icons.add_rounded,
+              size: 15,
+              color: color.withValues(alpha: .5),
+            ),
           ),
         ],
       ),

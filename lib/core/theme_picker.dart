@@ -1,88 +1,74 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'theme_provider.dart';
 
 class ThemePicker extends ConsumerWidget {
   const ThemePicker({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = ref.watch(themeProvider).asData?.value ?? ThemeMode.system;
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: scheme.surface.withValues(alpha: .55),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: scheme.outlineVariant.withValues(alpha: .4)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final mode in [ThemeMode.light, ThemeMode.system, ThemeMode.dark])
-            Tooltip(
-              message: _label(mode),
-              child: Semantics(
-                button: true,
-                selected: selected == mode,
-                label: _label(mode),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(24),
-                  onTap: () async {
-                    try {
-                      await ref.read(themeProvider.notifier).setMode(mode);
-                    } catch (_) {
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Tampilan belum tersimpan. Coba lagi, ya.')),
-                        );
-                      }
-                    }
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 280),
-                    curve: Curves.easeOutCubic,
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24),
-                      color: selected == mode ? scheme.primary : Colors.transparent,
-                      boxShadow: selected == mode
-                          ? [
-                              BoxShadow(
-                                color: scheme.primary.withValues(alpha: .25),
-                                blurRadius: 12,
-                                offset: const Offset(0, 3),
-                              ),
-                            ]
-                          : [],
-                    ),
-                    child: AnimatedRotation(
-                      turns: selected == mode ? 0 : -.08,
-                      duration: const Duration(milliseconds: 350),
-                      child: Icon(
-                        _icon(mode),
-                        size: 19,
-                        color: selected == mode ? scheme.onPrimary : scheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
+
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () async {
+          final nextMode = isDark ? ThemeMode.light : ThemeMode.dark;
+
+          try {
+            await ref.read(themeProvider.notifier).setMode(nextMode);
+          } catch (_) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Tampilan belum tersimpan. Coba lagi, ya.'),
                 ),
-              ),
+              );
+            }
+          }
+        },
+        borderRadius: BorderRadius.circular(50),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeInOut,
+          width: 42,
+          height: 42,
+          decoration: BoxDecoration(
+            color: isDark ? Colors.black : Colors.white,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: isDark
+                  ? Colors.white.withValues(alpha: .15)
+                  : Colors.black.withValues(alpha: .08),
             ),
-        ],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: .08),
+                blurRadius: 6,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            transitionBuilder: (child, animation) {
+              return RotationTransition(
+                turns: animation,
+                child: FadeTransition(opacity: animation, child: child),
+              );
+            },
+            child: Icon(
+              isDark ? Icons.wb_sunny_rounded : Icons.nightlight_round,
+              key: ValueKey(isDark),
+              size: 21,
+              color: isDark ? Colors.white : Colors.black,
+            ),
+          ),
+        ),
       ),
     );
   }
-
-  String _label(ThemeMode mode) => switch (mode) {
-    ThemeMode.system => 'Ikuti HP',
-    ThemeMode.light => 'Terang',
-    ThemeMode.dark => 'Gelap',
-  };
-  IconData _icon(ThemeMode mode) => switch (mode) {
-    ThemeMode.system => Icons.phone_android_rounded,
-    ThemeMode.light => Icons.wb_sunny_outlined,
-    ThemeMode.dark => Icons.nightlight_outlined,
-  };
 }

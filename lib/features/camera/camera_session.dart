@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'photo_codec.dart';
 import 'front_lens.dart';
@@ -45,7 +45,9 @@ class CameraSession extends ChangeNotifier with WidgetsBindingObserver {
           : 'Kamera belum bisa dibuka. Coba lagi, ya.';
     } catch (e) {
       await next?.dispose();
-      error = e is StateError ? e.message.toString() : 'Kamera bermasalah. Coba lagi.';
+      error = e is StateError
+          ? e.message.toString()
+          : 'Kamera bermasalah. Coba lagi.';
     } finally {
       _opening = false;
       if (!_closed) {

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/theme.dart';
@@ -34,11 +34,16 @@ class KlockApp extends ConsumerWidget {
         : ref
               .watch(sessionProvider)
               .when(
-                loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
-                error: (_, _) => const Scaffold(
-                  body: Center(child: Text('Gagal membaca sesi. Mulai ulang aplikasi.')),
+                loading: () => const Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
                 ),
-                data: (signedIn) => signedIn ? const AppShell() : const LoginPage(),
+                error: (_, _) => const Scaffold(
+                  body: Center(
+                    child: Text('Gagal membaca sesi. Mulai ulang aplikasi.'),
+                  ),
+                ),
+                data: (signedIn) =>
+                    signedIn ? const AppShell() : const LoginPage(),
               ),
   );
 }

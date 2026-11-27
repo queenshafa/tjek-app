@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'providers.dart';
@@ -19,7 +19,11 @@ class HistoryPage extends ConsumerWidget {
             Expanded(
               child: Text(
                 'Jejak hadir',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800, letterSpacing: -1),
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -1,
+                ),
               ),
             ),
             ThemePicker(),

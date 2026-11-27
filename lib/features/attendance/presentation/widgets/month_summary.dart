@@ -1,78 +1,83 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
-import '../../../../core/surface_card.dart';
 import '../../domain/attendance.dart';
 import '../../domain/attendance_policy.dart';
 
 class MonthSummary extends StatelessWidget {
   const MonthSummary({super.key, required this.items});
+
   final List<Attendance> items;
+
   @override
   Widget build(BuildContext context) {
     final confirmed = items.where((item) => item.createdAt != null).toList();
+
     final late = confirmed
-        .where((item) => AttendancePolicy.status(item.createdAt!) == AttendanceStatus.late)
+        .where(
+          (item) =>
+              AttendancePolicy.status(item.createdAt!) == AttendanceStatus.late,
+        )
         .length;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+
+    final onTime = confirmed.length - late;
+
+    return Row(
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: _tile(
-                context,
-                '${confirmed.length - late}',
-                'Tepat waktu',
-                Icons.check_rounded,
-                const Color(0xFF3B9E8B),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _tile(
-                context,
-                '$late',
-                'Telat',
-                Icons.schedule_rounded,
-                const Color(0xFFD58B54),
-              ),
-            ),
-          ],
+        Expanded(
+          child: _statCard(
+            value: '$onTime',
+            label: 'Tepat waktu',
+            isDark: false,
+          ),
         ),
-        const SizedBox(height: 12),
-        Text(
-          'Dari ${confirmed.length} absensi terakhir.',
-          style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
+
+        const SizedBox(width: 12),
+
+        Expanded(
+          child: _statCard(value: '$late', label: 'Telat', isDark: true),
         ),
       ],
     );
   }
 
-  Widget _tile(BuildContext context, String value, String label, IconData icon, Color color) =>
-      SurfaceCard(
-        padding: 18,
-        tint: color.withValues(alpha: .25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: .15),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: Theme.of(context).colorScheme.onSurface, size: 19),
+  Widget _statCard({
+    required String value,
+    required String label,
+    required bool isDark,
+  }) {
+    const orange = Color(0xFFF36C0B);
+
+    return Container(
+      height: 120,
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.black : Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.w800,
+              height: 1,
+              letterSpacing: -1.5,
+              color: isDark ? orange : Colors.black,
             ),
-            const SizedBox(height: 14),
-            Text(
-              value,
-              style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w700, letterSpacing: -1),
+          ),
+
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 15,
+              color: isDark ? Colors.white : Colors.black,
             ),
-            Text(
-              label,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant, fontSize: 12),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }

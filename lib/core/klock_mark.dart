@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class KlockMark extends StatelessWidget {
   const KlockMark({super.key, this.size = 46});
@@ -6,6 +6,11 @@ class KlockMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ClipRRect(
     borderRadius: BorderRadius.circular(size * .25),
-    child: Image.asset('assets/brand/klock.png', width: size, height: size, semanticLabel: 'Klock'),
+    child: Image.asset(
+      'assets/brand/klock.png',
+      width: size,
+      height: size,
+      semanticLabel: 'Klock',
+    ),
   );
 }

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -12,7 +12,9 @@ import 'support/theme_fixture.dart';
 
 void main() {
   for (final width in [320.0, 390.0]) {
-    testWidgets('Pages fit ${width.toInt()}px with larger accessibility text', (tester) async {
+    testWidgets('Pages fit ${width.toInt()}px with larger accessibility text', (
+      tester,
+    ) async {
       await initializeDateFormatting('id');
       tester.view.physicalSize = Size(width, 844);
       tester.view.devicePixelRatio = 1;

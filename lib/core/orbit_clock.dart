@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class OrbitClock extends StatelessWidget {
   const OrbitClock({super.key, this.size = 120});
@@ -23,7 +23,13 @@ class _ClockArt extends CustomPainter {
       ..strokeWidth = 1.2
       ..color = scheme.primary.withValues(alpha: .25);
     canvas.drawCircle(c, r * 1.27, stroke);
-    canvas.drawArc(Rect.fromCircle(center: c, radius: r * 1.08), -1.2, 4.8, false, stroke);
+    canvas.drawArc(
+      Rect.fromCircle(center: c, radius: r * 1.08),
+      -1.2,
+      4.8,
+      false,
+      stroke,
+    );
     canvas.drawCircle(
       c,
       r,
@@ -35,7 +41,11 @@ class _ClockArt extends CustomPainter {
           ],
         ).createShader(Rect.fromCircle(center: c, radius: r)),
     );
-    canvas.drawCircle(c, r, stroke..color = Colors.white.withValues(alpha: .65));
+    canvas.drawCircle(
+      c,
+      r,
+      stroke..color = Colors.white.withValues(alpha: .65),
+    );
     for (var i = 0; i < 12; i++) {
       final angle = i * math.pi / 6;
       final point = c + Offset(math.sin(angle), -math.cos(angle)) * r * .78;
@@ -52,7 +62,11 @@ class _ClockArt extends CustomPainter {
     canvas.drawLine(c, c + Offset(0, -r * .46), hand);
     canvas.drawLine(c, c + Offset(r * .35, r * .2), hand);
     canvas.drawCircle(c, 3.4, Paint()..color = scheme.primary);
-    canvas.drawCircle(c + Offset(r * .98, -r * .8), 5, Paint()..color = const Color(0xFFF6B38E));
+    canvas.drawCircle(
+      c + Offset(r * .98, -r * .8),
+      5,
+      Paint()..color = const Color(0xFFF6B38E),
+    );
     final badge = c + Offset(r * .8, r * .8);
     canvas.drawCircle(badge, r * .31, Paint()..color = const Color(0xFF90DCCB));
     canvas.drawPath(

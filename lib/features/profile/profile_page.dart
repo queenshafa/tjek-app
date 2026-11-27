@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../core/surface_card.dart';
 import '../../core/theme_picker.dart';
@@ -18,7 +18,11 @@ class ProfilePage extends StatelessWidget {
             Expanded(
               child: Text(
                 'Tentang kamu',
-                style: TextStyle(fontSize: 27, fontWeight: FontWeight.w800, letterSpacing: -.8),
+                style: TextStyle(
+                  fontSize: 27,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: -.8,
+                ),
               ),
             ),
             ThemePicker(),
@@ -27,7 +31,9 @@ class ProfilePage extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           'Biar lebih kenal, pasang foto terbaikmu.',
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
         const SizedBox(height: 26),
         const ProfileIdentity(),
@@ -39,7 +45,8 @@ class ProfilePage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary.withValues(alpha: .1),
+                  color: Theme.of(context).colorScheme.primary
+                      .withValues(alpha: .1),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: const Icon(Icons.shield_outlined, size: 23),
@@ -49,7 +56,10 @@ class ProfilePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Fotomu, tetap privat.', style: TextStyle(fontWeight: FontWeight.w700)),
+                    Text(
+                      'Fotomu, tetap privat.',
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
                     SizedBox(height: 8),
                     Text(
                       'Hanya untuk profil dan bukti absen. Butuh bantuan '
@@ -68,7 +78,10 @@ class ProfilePage extends StatelessWidget {
         Center(
           child: Text(
             'klock  /  dibuat untuk hari sekolahmu',
-            style: TextStyle(fontSize: 11, color: Theme.of(context).colorScheme.onSurfaceVariant),
+            style: TextStyle(
+              fontSize: 11,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
       ],

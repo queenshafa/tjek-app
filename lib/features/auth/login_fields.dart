@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class LoginFields extends StatefulWidget {
   const LoginFields({super.key, required this.email, required this.password});
@@ -31,7 +31,11 @@ class _LoginFieldsState extends State<LoginFields> {
           suffixIcon: IconButton(
             tooltip: hidden ? 'Lihat kata sandi' : 'Sembunyikan kata sandi',
             onPressed: () => setState(() => hidden = !hidden),
-            icon: Icon(hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined),
+            icon: Icon(
+              hidden
+                  ? Icons.visibility_outlined
+                  : Icons.visibility_off_outlined,
+            ),
           ),
         ),
       ),

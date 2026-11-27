@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/surface_card.dart';
@@ -16,7 +16,11 @@ class ProfileIdentity extends ConsumerWidget {
         Text(
           ref.watch(studentNameProvider),
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800, letterSpacing: -.7),
+          style: const TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w800,
+            letterSpacing: -.7,
+          ),
         ),
         const SizedBox(height: 12),
         Container(
@@ -28,7 +32,11 @@ class ProfileIdentity extends ConsumerWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.school_outlined, size: 15, color: Theme.of(context).colorScheme.primary),
+              Icon(
+                Icons.school_outlined,
+                size: 15,
+                color: Theme.of(context).colorScheme.primary,
+              ),
               const SizedBox(width: 7),
               const Text('Akun siswi', style: TextStyle(fontSize: 12)),
             ],

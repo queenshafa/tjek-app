@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../attendance/data/camera_service.dart';
@@ -21,10 +21,19 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Pakai foto ini?'),
-          content: ClipRRect(borderRadius: BorderRadius.circular(12), child: Image.memory(photo)),
+          content: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.memory(photo),
+          ),
           actions: [
-            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Batal')),
-            TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Simpan')),
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('Batal'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Simpan'),
+            ),
           ],
         ),
       );
@@ -34,7 +43,9 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Foto profil belum tersimpan. Cek koneksi, lalu coba lagi.'),
+            content: Text(
+              'Foto profil belum tersimpan. Cek koneksi, lalu coba lagi.',
+            ),
           ),
         );
       }
@@ -62,7 +73,8 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.primary.withValues(alpha: .18),
+                color: Theme.of(context).colorScheme.primary
+                    .withValues(alpha: .18),
                 blurRadius: 24,
                 offset: const Offset(0, 8),
               ),
@@ -72,7 +84,9 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
             radius: 46,
             backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             backgroundImage: bytes == null ? null : MemoryImage(bytes),
-            child: bytes == null ? const Icon(Icons.person_outline, size: 42) : null,
+            child: bytes == null
+                ? const Icon(Icons.person_outline, size: 42)
+                : null,
           ),
         ),
         const SizedBox(height: 8),

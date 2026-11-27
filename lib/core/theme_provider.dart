@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final themeProvider = AsyncNotifierProvider<ThemePreference, ThemeMode>(ThemePreference.new);
+final themeProvider = AsyncNotifierProvider<ThemePreference, ThemeMode>(
+  ThemePreference.new,
+);
 
 class ThemePreference extends AsyncNotifier<ThemeMode> {
   late final storage = SharedPreferencesAsync();

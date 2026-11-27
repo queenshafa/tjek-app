@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/camera_service.dart';
@@ -31,8 +31,7 @@ class _CapturePageState extends ConsumerState<CapturePage> {
     } catch (_) {
       if (mounted) {
         setState(
-          () =>
-              error = 'Kamera gagal atau foto melebihi 100 KB. Periksa izin kamera dan coba lagi.',
+          () => error = 'Kamera gagal atau foto melebihi 100 KB. Periksa izin kamera dan coba lagi.',
         );
       }
     } finally {
@@ -49,8 +48,9 @@ class _CapturePageState extends ConsumerState<CapturePage> {
       await ref.read(repositoryProvider).submit(photo!);
       if (!mounted) return;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Sudah masuk! Absensimu tersimpan.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sudah masuk! Absensimu tersimpan.')),
+      );
     } catch (_) {
       if (mounted) {
         setState(
@@ -87,7 +87,10 @@ class _CapturePageState extends ConsumerState<CapturePage> {
             if (error != null)
               Padding(
                 padding: const EdgeInsets.only(top: 18),
-                child: Text(error!, style: const TextStyle(color: Colors.orangeAccent)),
+                child: Text(
+                  error!,
+                  style: const TextStyle(color: Colors.orangeAccent),
+                ),
               ),
           ],
         ),
