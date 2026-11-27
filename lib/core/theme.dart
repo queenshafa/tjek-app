@@ -10,7 +10,7 @@ ThemeData buildTheme(Brightness brightness) {
   final scheme = ColorScheme.fromSeed(
     seedColor: mint,
     brightness: brightness,
-    primary: dark ? const Color(0xFFC3B8FF) : const Color(0xFF6552D7),
+    primary: dark ? const Color(0xFFC3B8FF) : const Color(0xFFED7014),
     surface: dark ? const Color(0xFF19213B) : const Color(0xFFF8F9FF),
     onSurface: dark ? const Color(0xFFF1F3FF) : ink,
   );

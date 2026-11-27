@@ -10,6 +10,7 @@ class LogoutButton extends StatefulWidget {
 
 class _LogoutButtonState extends State<LogoutButton> {
   bool busy = false;
+
   Future<void> logout() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -46,9 +47,54 @@ class _LogoutButtonState extends State<LogoutButton> {
   }
 
   @override
-  Widget build(BuildContext context) => OutlinedButton.icon(
-    onPressed: busy ? null : logout,
-    icon: const Icon(Icons.logout),
-    label: Text(busy ? 'Sebentar…' : 'Keluar akun'),
-  );
+  Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
+    return Material(
+      color: Colors.black,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: busy ? null : logout,
+        borderRadius: BorderRadius.circular(18),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  busy ? 'Sebentar…' : 'Keluar akun',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  shape: BoxShape.circle,
+                ),
+                child: busy
+                    ? const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(
+                        Icons.logout_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

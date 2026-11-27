@@ -12,6 +12,8 @@ class ProfilePhoto extends ConsumerStatefulWidget {
 
 class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
   bool busy = false;
+  bool showEditButton = false;
+
   Future<void> change() async {
     setState(() => busy = true);
     try {
@@ -39,6 +41,9 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
       );
       if (save != true || !mounted) return;
       await ref.read(profileRepositoryProvider).save(photo);
+      if (mounted) {
+        setState(() => showEditButton = false);
+      }
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -58,47 +63,74 @@ class _ProfilePhotoState extends ConsumerState<ProfilePhoto> {
   Widget build(BuildContext context) {
     final avatar = ref.watch(avatarProvider);
     final bytes = avatar.asData?.value;
+
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                Theme.of(context).colorScheme.primary.withValues(alpha: .65),
-                const Color(0xFF8BD8CA),
-                const Color(0xFFF2C3B4),
-              ],
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.primary
-                    .withValues(alpha: .18),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
+        GestureDetector(
+          onTap: () {
+            if (!busy) {
+              setState(() => showEditButton = !showEditButton);
+            }
+          },
           child: CircleAvatar(
-            radius: 46,
-            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            radius: 52,
+            backgroundColor: const Color(0xFFD9D9D9),
             backgroundImage: bytes == null ? null : MemoryImage(bytes),
-            child: bytes == null
-                ? const Icon(Icons.person_outline, size: 42)
-                : null,
           ),
         ),
-        const SizedBox(height: 8),
-        TextButton.icon(
-          onPressed: busy || avatar.isLoading ? null : change,
-          icon: const Icon(Icons.camera_alt_outlined, size: 18),
-          label: Text(busy ? 'Menyimpan…' : 'Ganti foto'),
+        AnimatedSize(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          child: showEditButton || busy
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: InkWell(
+                    onTap: busy || avatar.isLoading ? null : change,
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.07),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            busy ? Icons.hourglass_top_rounded : Icons.edit,
+                            size: 13,
+                            color: Colors.black87,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            busy ? 'Menyimpan…' : 'Edit foto',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              : const SizedBox.shrink(),
         ),
         if (avatar.hasError)
-          TextButton(
-            onPressed: () => ref.invalidate(avatarProvider),
-            child: const Text('Foto gagal dimuat · Coba lagi'),
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: TextButton(
+              onPressed: () => ref.invalidate(avatarProvider),
+              child: const Text(
+                'Foto gagal dimuat · Coba lagi',
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
           ),
       ],
     );

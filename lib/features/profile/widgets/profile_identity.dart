@@ -7,42 +7,47 @@ import 'profile_photo.dart';
 
 class ProfileIdentity extends ConsumerWidget {
   const ProfileIdentity({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) => SurfaceCard(
-    child: Column(
-      children: [
-        const ProfilePhoto(),
-        const SizedBox(height: 12),
-        Text(
-          ref.watch(studentNameProvider),
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.w800,
-            letterSpacing: -.7,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withValues(alpha: .1),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.school_outlined,
-                size: 15,
-                color: Theme.of(context).colorScheme.primary,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
+    return SizedBox(
+      width: double.infinity,
+      child: SurfaceCard(
+        padding: 24,
+        child: Column(
+          children: [
+            const ProfilePhoto(),
+            const SizedBox(height: 18),
+            Text(
+              ref.watch(studentNameProvider),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.4,
               ),
-              const SizedBox(width: 7),
-              const Text('Akun siswi', style: TextStyle(fontSize: 12)),
-            ],
-          ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 6),
+              decoration: BoxDecoration(
+                color: primaryColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: const Text(
+                'Akun Siswa',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }
