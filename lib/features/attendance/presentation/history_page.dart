@@ -8,61 +8,109 @@ import 'widgets/history_tile.dart';
 
 class HistoryPage extends ConsumerWidget {
   const HistoryPage({super.key});
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) => EnterMotion(
-    child: ListView(
-      padding: const EdgeInsets.all(24),
-      children: [
-        const SizedBox(height: 16),
-        const Row(
-          children: [
-            Expanded(
-              child: Text(
-                'Jejak hadir',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: -1,
-                ),
-              ),
-            ),
-            ThemePicker(),
-          ],
-        ),
-        const SizedBox(height: 10),
-        const Text('Foto, jam masuk, dan status absenmu.', style: TextStyle()),
-        const SizedBox(height: 28),
-        ...ref
-            .watch(attendanceProvider)
-            .when(
-              data: (items) => items.isEmpty
-                  ? [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 64),
-                        child: Column(
-                          children: [
-                            Icon(Icons.history, size: 56),
-                            SizedBox(height: 18),
-                            Text('Belum ada absensi.'),
-                            SizedBox(height: 8),
-                            Text(
-                              'Kalau sudah di sekolah, absen lewat Beranda, ya.',
-                              style: TextStyle(),
-                            ),
-                          ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final attendanceAsync = ref.watch(attendanceProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.black;
+
+    return Scaffold(
+      backgroundColor: isDark
+          ? Theme.of(context).scaffoldBackgroundColor
+          : const Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: EnterMotion(
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            children: [
+              // Header
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Riwayat',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -.5,
+                            color: textColor,
+                          ),
                         ),
-                      ),
-                    ]
-                  : items.map((item) => HistoryTile(record: item)).toList(),
-              loading: () => [const Center(child: CircularProgressIndicator())],
-              error: (_, _) => [
-                TextButton(
-                  onPressed: () => ref.invalidate(attendanceProvider),
-                  child: const Text('Gagal memuat. Ketuk untuk mencoba lagi.'),
-                ),
-              ],
-            ),
-      ],
-    ),
-  );
+                        const SizedBox(height: 3),
+                        Text(
+                          attendanceAsync.maybeWhen(
+                            data: (items) => '${items.length} total absen',
+                            orElse: () => 'Memuat total absen...',
+                          ),
+                          style: TextStyle(fontSize: 14, color: textColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const ThemePicker(),
+                ],
+              ),
+              const SizedBox(height: 24),
+              ...attendanceAsync.when(
+                data: (items) => items.isEmpty
+                    ? [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 64),
+                          child: Column(
+                            children: [
+                              const Icon(
+                                Icons.history,
+                                size: 56,
+                                color: Colors.grey,
+                              ),
+                              const SizedBox(height: 18),
+                              const Text(
+                                'Belum ada absensi.',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Kalau sudah di sekolah, absen lewat Beranda, ya.',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.6),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]
+                    : items
+                          .map(
+                            (item) => Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: HistoryTile(record: item),
+                            ),
+                          )
+                          .toList(),
+                loading: () => [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 48),
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
+                ],
+                error: (_, _) => [
+                  TextButton(
+                    onPressed: () => ref.invalidate(attendanceProvider),
+                    child: const Text(
+                      'Gagal memuat. Ketuk untuk mencoba lagi.',
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

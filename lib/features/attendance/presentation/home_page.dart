@@ -74,6 +74,7 @@ class HomePage extends ConsumerWidget {
                 height: 65,
                 child: FilledButton(
                   onPressed: () {
+                    // TODO: Navigate to history page
                     Navigator.of(context).pushNamed('/history');
                   },
                   style: FilledButton.styleFrom(
