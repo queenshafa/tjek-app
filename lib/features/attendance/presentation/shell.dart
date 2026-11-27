@@ -13,22 +13,25 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int index = 0;
+
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: SafeArea(
-      child: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 600),
-          child: IndexedStack(
-            index: index,
-            children: const [HomePage(), HistoryPage(), ProfilePage()],
-          ),
+    extendBody: true,
+    body: Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: IndexedStack(
+          index: index,
+          children: const [HomePage(), HistoryPage(), ProfilePage()],
         ),
       ),
     ),
-    bottomNavigationBar: FloatingNav(
-      index: index,
-      onChanged: (value) => setState(() => index = value),
+    bottomNavigationBar: ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 600),
+      child: FloatingNav(
+        index: index,
+        onChanged: (value) => setState(() => index = value),
+      ),
     ),
   );
 }
