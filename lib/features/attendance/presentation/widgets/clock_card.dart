@@ -14,14 +14,19 @@ class ClockCard extends ConsumerWidget {
     final now = AttendancePolicy.wib(
       ref.watch(clockProvider).asData?.value ?? DateTime.now(),
     );
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.black;
 
-    const orange = Color(0xFFF36C0B);
+    const orange = Color(0xFFED7014);
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF1E1E22) : Colors.white,
         borderRadius: BorderRadius.circular(17),
+        border: isDark
+            ? Border.all(color: Colors.white.withValues(alpha: 0.08))
+            : null,
       ),
       child: Column(
         children: [
@@ -60,7 +65,6 @@ class ClockCard extends ConsumerWidget {
                   ),
                 ),
               ),
-
               const SizedBox(width: 10),
 
               // Live Analog Clock
@@ -70,12 +74,12 @@ class ClockCard extends ConsumerWidget {
                 isLive: false,
                 datetime: now,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: isDark ? const Color(0xFF141416) : Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.black, width: 2.5),
+                  border: Border.all(color: textColor, width: 2.5),
                 ),
-                hourHandColor: Colors.black,
-                minuteHandColor: Colors.black,
+                hourHandColor: textColor,
+                minuteHandColor: textColor,
                 secondHandColor: orange,
                 showSecondHand: true,
                 showNumbers: false,
@@ -85,26 +89,24 @@ class ClockCard extends ConsumerWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 2),
-
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
                   'Masuk jam 07:00 WIB',
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.black,
+                    color: textColor,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
               Text(
                 DateFormat('EEEE, d MMM', 'id').format(now),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12,
-                  color: Colors.black,
+                  color: textColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),

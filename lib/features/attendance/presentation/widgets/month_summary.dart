@@ -10,6 +10,7 @@ class MonthSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appIsDark = Theme.of(context).brightness == Brightness.dark;
     final confirmed = items.where((item) => item.createdAt != null).toList();
 
     final late = confirmed
@@ -27,14 +28,18 @@ class MonthSummary extends StatelessWidget {
           child: _statCard(
             value: '$onTime',
             label: 'Tepat waktu',
-            isDark: false,
+            isBlackCard: false,
+            appIsDark: appIsDark,
           ),
         ),
-
         const SizedBox(width: 12),
-
         Expanded(
-          child: _statCard(value: '$late', label: 'Telat', isDark: true),
+          child: _statCard(
+            value: '$late',
+            label: 'Telat',
+            isBlackCard: true,
+            appIsDark: appIsDark,
+          ),
         ),
       ],
     );
@@ -43,16 +48,34 @@ class MonthSummary extends StatelessWidget {
   Widget _statCard({
     required String value,
     required String label,
-    required bool isDark,
+    required bool isBlackCard,
+    required bool appIsDark,
   }) {
-    const orange = Color(0xFFF36C0B);
+    const orange = Color(0xFFED7014);
+
+    final bgColor = isBlackCard
+        ? const Color(0xFF0B0B0B)
+        : (appIsDark ? const Color(0xFF1E1E22) : Colors.white);
+
+    final valueColor = isBlackCard
+        ? orange
+        : (appIsDark ? Colors.white : Colors.black);
+
+    final labelColor = (isBlackCard || appIsDark) ? Colors.white : Colors.black;
 
     return Container(
       height: 120,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: isDark ? Colors.black : Colors.white,
+        color: bgColor,
         borderRadius: BorderRadius.circular(15),
+        border: appIsDark
+            ? Border.all(
+                color: Colors.white.withValues(
+                  alpha: isBlackCard ? 0.12 : 0.08,
+                ),
+              )
+            : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,17 +88,10 @@ class MonthSummary extends StatelessWidget {
               fontWeight: FontWeight.w800,
               height: 1,
               letterSpacing: -1.5,
-              color: isDark ? orange : Colors.black,
+              color: valueColor,
             ),
           ),
-
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 15,
-              color: isDark ? Colors.white : Colors.black,
-            ),
-          ),
+          Text(label, style: TextStyle(fontSize: 15, color: labelColor)),
         ],
       ),
     );

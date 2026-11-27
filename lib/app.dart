@@ -13,37 +13,41 @@ class KlockApp extends ConsumerWidget {
   final Object? startupError;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) => MaterialApp(
-    title: 'Klock App',
-    builder: (_, child) => Atmosphere(child: child!),
-    debugShowCheckedModeBanner: false,
-    theme: buildTheme(Brightness.light),
-    darkTheme: buildTheme(Brightness.dark),
-    themeMode: ref.watch(themeProvider).asData?.value ?? ThemeMode.system,
-    home: startupError != null
-        ? const Scaffold(
-            body: Center(
-              child: Padding(
-                padding: EdgeInsets.all(32),
-                child: Text(
-                  'Firebase belum terhubung. Selesaikan TODO-F01; lihat docs/BRIEF-SISWA.pdf.',
-                ),
-              ),
-            ),
-          )
-        : ref
-              .watch(sessionProvider)
-              .when(
-                loading: () => const Scaffold(
-                  body: Center(child: CircularProgressIndicator()),
-                ),
-                error: (_, _) => const Scaffold(
-                  body: Center(
-                    child: Text('Gagal membaca sesi. Mulai ulang aplikasi.'),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider).asData?.value ?? ThemeMode.light;
+
+    return MaterialApp(
+      title: 'Klock App',
+      builder: (_, child) => Atmosphere(child: child!),
+      debugShowCheckedModeBanner: false,
+      theme: buildTheme(Brightness.light),
+      darkTheme: buildTheme(Brightness.dark),
+      themeMode: themeMode,
+      home: startupError != null
+          ? const Scaffold(
+              body: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32),
+                  child: Text(
+                    'Firebase belum terhubung. Selesaikan TODO-F01; lihat docs/BRIEF-SISWA.pdf.',
                   ),
                 ),
-                data: (signedIn) =>
-                    signedIn ? const AppShell() : const LoginPage(),
               ),
-  );
+            )
+          : ref
+                .watch(sessionProvider)
+                .when(
+                  loading: () => const Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  ),
+                  error: (_, _) => const Scaffold(
+                    body: Center(
+                      child: Text('Gagal membaca sesi. Mulai ulang aplikasi.'),
+                    ),
+                  ),
+                  data: (signedIn) =>
+                      signedIn ? const AppShell() : const LoginPage(),
+                ),
+    );
+  }
 }

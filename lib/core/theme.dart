@@ -1,18 +1,20 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const mint = Color(0xFF6655D8);
-const ink = Color(0xFF17213D);
+const brandOrange = Color(0xFFED7014);
 
 ThemeData buildTheme(Brightness brightness) {
   final dark = brightness == Brightness.dark;
 
   final scheme = ColorScheme.fromSeed(
-    seedColor: mint,
+    seedColor: brandOrange,
     brightness: brightness,
-    primary: dark ? const Color(0xFFC3B8FF) : const Color(0xFFED7014),
-    surface: dark ? const Color(0xFF19213B) : const Color(0xFFF8F9FF),
-    onSurface: dark ? const Color(0xFFF1F3FF) : ink,
+    primary: brandOrange,
+    onPrimary: Colors.white,
+    surface: dark ? const Color(0xFF1E1E22) : Colors.white,
+    onSurface: dark ? const Color(0xFFF4F4F6) : const Color(0xFF111111),
+    onSurfaceVariant: dark ? const Color(0xFF9E9EA4) : const Color(0xFF6E6E73),
+    outlineVariant: dark ? const Color(0xFF2E2E34) : const Color(0xFFE5E5EA),
   );
 
   final dmSans = GoogleFonts.dmSansTextTheme().apply(
@@ -22,8 +24,13 @@ ThemeData buildTheme(Brightness brightness) {
 
   return ThemeData(
     useMaterial3: true,
+    brightness: brightness,
     colorScheme: scheme,
-    scaffoldBackgroundColor: Colors.transparent,
+    // Latar belakang solid (tidak transparan lagi)
+    scaffoldBackgroundColor: dark
+        ? const Color(0xFF121214)
+        : const Color(0xFFF5F5F5),
+    cardColor: scheme.surface,
 
     // Global font: DM Sans
     textTheme: dmSans.copyWith(
@@ -38,32 +45,35 @@ ThemeData buildTheme(Brightness brightness) {
       ),
     ),
 
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: Colors.transparent,
+      foregroundColor: scheme.onSurface,
       elevation: 0,
       scrolledUnderElevation: 0,
     ),
 
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
-      fillColor: scheme.surface.withValues(alpha: dark ? .55 : .7),
+      fillColor: dark ? const Color(0xFF26262B) : Colors.white,
       contentPadding: const EdgeInsets.all(18),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(18),
-        borderSide: BorderSide(
-          color: scheme.outlineVariant.withValues(alpha: .5),
-        ),
+        borderSide: BorderSide(color: scheme.outlineVariant),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(18),
-        borderSide: BorderSide(
-          color: scheme.outlineVariant.withValues(alpha: .4),
-        ),
+        borderSide: BorderSide(color: scheme.outlineVariant),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(18),
+        borderSide: const BorderSide(color: brandOrange, width: 1.5),
       ),
     ),
 
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
+        backgroundColor: brandOrange,
+        foregroundColor: Colors.white,
         minimumSize: const Size(double.infinity, 56),
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
@@ -72,7 +82,9 @@ ThemeData buildTheme(Brightness brightness) {
 
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
+        foregroundColor: scheme.onSurface,
         minimumSize: const Size(double.infinity, 52),
+        side: BorderSide(color: scheme.outlineVariant),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       ),
     ),

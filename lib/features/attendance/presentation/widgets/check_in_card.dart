@@ -6,7 +6,6 @@ import '../../domain/attendance.dart';
 import '../../domain/attendance_policy.dart';
 import '../providers.dart';
 import '../capture_page.dart';
-import 'scan_emblem.dart';
 
 class CheckInCard extends ConsumerWidget {
   const CheckInCard({super.key});
@@ -14,6 +13,7 @@ class CheckInCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final records = ref.watch(attendanceProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final now = AttendancePolicy.wib(
       ref.watch(clockProvider).asData?.value ?? DateTime.now(),
@@ -33,15 +33,14 @@ class CheckInCard extends ConsumerWidget {
       }
     }
 
-    final isLate =
-        today?.createdAt != null &&
-        AttendancePolicy.status(today!.createdAt!) == AttendanceStatus.late;
-
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        color: Colors.black,
+        color: const Color(0xFF0B0B0B),
         borderRadius: BorderRadius.circular(17),
+        border: isDark
+            ? Border.all(color: Colors.white.withValues(alpha: 0.12))
+            : null,
       ),
       child: Column(
         children: [
@@ -49,12 +48,10 @@ class CheckInCard extends ConsumerWidget {
             today == null
                 ? Icons.sentiment_satisfied_alt_rounded
                 : Icons.check_circle_rounded,
-            color: const Color(0xFFF36C0B),
+            color: const Color(0xFFED7014),
             size: 55,
           ),
-
           const SizedBox(height: 2),
-
           Text(
             today == null ? 'Absen dulu, yuk!' : today.statusLabel,
             textAlign: TextAlign.center,
@@ -64,9 +61,7 @@ class CheckInCard extends ConsumerWidget {
               color: Colors.white,
             ),
           ),
-
           const SizedBox(height: 5),
-
           Text(
             today == null
                 ? 'Absen pake kamera depan, cek fotonya, langsung kirim deh! Kalau lewat 07:00 WIB, berarti telat, ya!'
@@ -78,9 +73,7 @@ class CheckInCard extends ConsumerWidget {
               color: Colors.white,
             ),
           ),
-
           const SizedBox(height: 13),
-
           SizedBox(
             width: double.infinity,
             height: 37,
@@ -111,7 +104,6 @@ class CheckInCard extends ConsumerWidget {
               ),
             ),
           ),
-
           if (records.hasError) ...[
             const SizedBox(height: 8),
             TextButton(

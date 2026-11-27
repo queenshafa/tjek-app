@@ -16,13 +16,17 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final name = ref.watch(studentNameProvider).split(' ').first;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : Colors.black;
 
     return EnterMotion(
       child: Container(
-        color: const Color(0xFFF4F4F4),
+        color: isDark
+            ? Theme.of(context).scaffoldBackgroundColor
+            : const Color(0xFFF4F4F4),
         child: SafeArea(
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 96),
             children: [
               // Header
               Row(
@@ -33,17 +37,17 @@ class HomePage extends ConsumerWidget {
                       children: [
                         Text(
                           'Semangat Pagi, $name',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
                             letterSpacing: -.5,
-                            color: Colors.black,
+                            color: textColor,
                           ),
                         ),
                         const SizedBox(height: 3),
-                        const Text(
+                        Text(
                           'Udah masuk sekolah belum mas?',
-                          style: TextStyle(fontSize: 14, color: Colors.black),
+                          style: TextStyle(fontSize: 14, color: textColor),
                         ),
                       ],
                     ),
@@ -74,11 +78,10 @@ class HomePage extends ConsumerWidget {
                 height: 65,
                 child: FilledButton(
                   onPressed: () {
-                    // TODO: Navigate to history page
                     Navigator.of(context).pushNamed('/history');
                   },
                   style: FilledButton.styleFrom(
-                    backgroundColor: const Color(0xFFF36C0B),
+                    backgroundColor: const Color(0xFFED7014),
                     foregroundColor: Colors.white,
                     elevation: 0,
                     padding: const EdgeInsets.symmetric(
