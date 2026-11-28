@@ -1,4 +1,5 @@
 import 'package:klock_app/core/brand_header.dart';
+import 'package:klock_app/features/attendance/presentation/shell.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -78,7 +79,7 @@ class HomePage extends ConsumerWidget {
                 height: 65,
                 child: FilledButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed('/history');
+                    ref.read(shellTabIndexProvider.notifier).setTab(1);
                   },
                   style: FilledButton.styleFrom(
                     backgroundColor: const Color(0xFFED7014),
