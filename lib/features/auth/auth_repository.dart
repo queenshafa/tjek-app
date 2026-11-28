@@ -10,23 +10,30 @@ class AuthRepository {
   final FirebaseAuth auth;
 
   Future<void> signIn(String email, String password) async {
-    // TODO-F03: Login Email/Password. Biarkan exception ditangani UI.
     await auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   Stream<User?> watchSession() {
-    // TODO-F04: Dengarkan perubahan sesi; jangan simpan status login sendiri.
-    return auth.authStateChanges();
+    return auth.userChanges();
   }
 
-  String get studentName {
-    // TODO-F04: Gunakan displayName, lalu email sebelum @, lalu "Siswi".
-    final user = auth.currentUser;
-    return user?.displayName ?? user?.email?.split('@').first ?? 'Siswi';
+  String studentNameFor(User? user) {
+    final display = user?.displayName?.trim();
+    if (display != null && display.isNotEmpty) {
+      return display;
+    }
+
+    final emailPrefix = user?.email?.split('@').first.trim();
+    if (emailPrefix != null && emailPrefix.isNotEmpty) {
+      return emailPrefix;
+    }
+
+    return 'Siswi';
   }
+
+  String get studentName => studentNameFor(auth.currentUser);
 
   Future<void> signOut() async {
-    // TODO-F05: Keluar dari Firebase Auth, bukan hanya pindah halaman.
     await auth.signOut();
   }
 }
