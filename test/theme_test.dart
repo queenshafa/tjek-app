@@ -17,7 +17,7 @@ void main() {
           themeProvider.overrideWith(TestTheme.new),
           sessionProvider.overrideWith((ref) => Stream.value(false)),
         ],
-        child: const KlockApp(),
+        child: const TjekApp(),
       ),
     );
     await tester.pumpAndSettle();

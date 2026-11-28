@@ -31,7 +31,7 @@ void main() {
             avatarProvider.overrideWith((ref) => Stream.value(null)),
             attendanceProvider.overrideWith((ref) => Stream.value([])),
           ],
-          child: const KlockApp(),
+          child: const TjekApp(),
         ),
       );
       await tester.pumpAndSettle();

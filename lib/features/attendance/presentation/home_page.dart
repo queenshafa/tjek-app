@@ -36,7 +36,7 @@ class HomePage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Semangat Pagi, $name',
+                          'Apa Kabar, $name?',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
@@ -46,7 +46,7 @@ class HomePage extends ConsumerWidget {
                         ),
                         const SizedBox(height: 3),
                         Text(
-                          'Udah masuk sekolah belum mas?',
+                          'Yuk, catat kehadiranmu hari ini!',
                           style: TextStyle(fontSize: 14, color: textColor),
                         ),
                       ],

@@ -8,8 +8,8 @@ import 'features/auth/auth_providers.dart';
 import 'features/auth/login_page.dart';
 import 'features/attendance/presentation/shell.dart';
 
-class KlockApp extends ConsumerWidget {
-  const KlockApp({super.key, this.startupError});
+class TjekApp extends ConsumerWidget {
+  const TjekApp({super.key, this.startupError});
   final Object? startupError;
 
   @override
@@ -17,7 +17,7 @@ class KlockApp extends ConsumerWidget {
     final themeMode = ref.watch(themeProvider).asData?.value ?? ThemeMode.light;
 
     return MaterialApp(
-      title: 'Klock App',
+      title: 'Tjek',
       builder: (_, child) => Atmosphere(child: child!),
       debugShowCheckedModeBanner: false,
       theme: buildTheme(Brightness.light),

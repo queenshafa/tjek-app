@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [sessionProvider.overrideWith((ref) => Stream.value(false))],
-        child: const KlockApp(),
+        child: const TjekApp(),
       ),
     );
     await tester.pumpAndSettle();
@@ -16,9 +16,15 @@ void main() {
     expect(find.text('Email sekolah'), findsOneWidget);
     expect(find.text('Kata sandi'), findsOneWidget);
   });
-  testWidgets('Startup failure blocks login until Firebase is configured', (tester) async {
+  testWidgets('Startup failure blocks login until Firebase is configured', (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      ProviderScope(child: KlockApp(startupError: StateError('Missing native configuration'))),
+      ProviderScope(
+        child: TjekApp(
+          startupError: StateError('Missing native configuration'),
+        ),
+      ),
     );
     await tester.pumpAndSettle();
     expect(find.textContaining('Firebase belum terhubung'), findsOneWidget);

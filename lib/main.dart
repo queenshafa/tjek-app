@@ -17,5 +17,5 @@ Future<void> main() async {
   } catch (error) {
     startupError = error; // menyimpan logs kalau app kita error
   }
-  runApp(ProviderScope(child: KlockApp(startupError: startupError)));
+  runApp(ProviderScope(child: TjekApp(startupError: startupError)));
 }
